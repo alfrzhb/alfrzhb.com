@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ArrowRight, BookOpen, CalendarDays, ChartNoAxesColumnIncreasing, ClipboardCheck, CodeXml, Database, FileCode2, GraduationCap, LayoutDashboard, Mail, MessageSquare, Monitor, QrCode, Smartphone, Users, Cloud, Award, X, FlaskConical, ExternalLink, type LucideIcon } from 'lucide-react';
+import { ArrowRight, BookOpen, CalendarDays, ChartNoAxesColumnIncreasing, ClipboardCheck, CodeXml, FileCode2, GraduationCap, Mail, MessageSquare, Monitor, QrCode, Smartphone, Users, Cloud, Award, X, FlaskConical, ExternalLink, type LucideIcon } from 'lucide-react';
 import { Rays, SectionHeading, Tag } from './components';
 import { archive, education, experience, notes, projects, social, type Detail } from './data';
 
@@ -20,7 +20,7 @@ function ProjectPreview({ id }: {id: string}) {
 }
 
 export function SelectedWork({ onOpen }: {onOpen: (detail: Detail) => void}) {
-  return <section id="work" className="section container work" aria-labelledby="work-heading">
+  return <section id="work" tabIndex={-1} className="section container work" aria-labelledby="work-heading">
     <SectionHeading label="Work"><span id="work-heading">Selected Work</span></SectionHeading>
     <p className="section-description">Three projects that best represent how I think, build, and refine digital products.</p>
     <div className="project-grid">{projects.map((project,index)=><article className="project-card" key={project.id}>
@@ -33,7 +33,7 @@ export function SelectedWork({ onOpen }: {onOpen: (detail: Detail) => void}) {
 }
 
 export function Experience() {
-  return <section id="experience" className="section container" aria-labelledby="experience-heading">
+  return <section id="experience" tabIndex={-1} className="section container" aria-labelledby="experience-heading">
     <SectionHeading label="Experience"><span id="experience-heading">Where I’ve worked<br />&amp; contributed</span></SectionHeading>
     <ol className="timeline">{experience.map(item=><li key={item.title}>
       <div className="timeline-copy"><p className="timeline-date">{item.date}</p><h3>{item.title}</h3><p className="organization">{item.organization}</p><p className="timeline-description">{item.description}</p><div className="tag-row">{item.tags.map(tag=><Tag key={tag.label} tone={tag.tone}>{tag.label}</Tag>)}</div></div>
@@ -43,7 +43,7 @@ export function Experience() {
 }
 
 export function Learning() {
-  return <section id="learning" className="section container learning" aria-labelledby="learning-heading">
+  return <section id="learning" tabIndex={-1} className="section container learning" aria-labelledby="learning-heading">
     <SectionHeading label="Learning"><span id="learning-heading">Learning, education<br />&amp; credentials</span></SectionHeading>
     <div className="learning-grid">{education.map(item=><article className="learning-card" key={item.title}>
       <SketchIcon name={item.icon} /><div className="learning-card-copy"><h3>{item.title}</h3><p>{item.description}</p></div>
@@ -54,7 +54,7 @@ export function Learning() {
 }
 
 export function Writing({ onOpen }: {onOpen: (detail: Detail) => void}) {
-  return <section id="writing" className="section container writing" aria-labelledby="writing-heading">
+  return <section id="writing" tabIndex={-1} className="section container writing" aria-labelledby="writing-heading">
     <SectionHeading label="Writing"><span id="writing-heading">Things I’m learning<br />&amp; writing about</span></SectionHeading>
     <p className="section-description">Editable learning drafts. These notes await personal review before final publication.</p>
     <div className="notes-grid">{notes.map(note=><article className="note-card" key={note.id}>
@@ -65,31 +65,31 @@ export function Writing({ onOpen }: {onOpen: (detail: Detail) => void}) {
 }
 
 export function Archive({ onOpen }: {onOpen: (detail: Detail) => void}) {
-  return <section id="archive" className="section container archive" aria-labelledby="archive-heading">
+  return <section id="archive" tabIndex={-1} className="section container archive" aria-labelledby="archive-heading">
     <SectionHeading label="Archive"><span id="archive-heading">More things<br />I’ve built</span></SectionHeading>
     <p className="section-description">Other projects, experiments, and earlier work.</p>
     <div className="archive-grid">{archive.map(project=><button className="archive-card" key={project.id} onClick={()=>onOpen(project.detail)} aria-label={`Explore ${project.title}`}>
       <SketchIcon name={project.icon} /><span className="archive-copy"><span className="archive-title">{project.title}</span><span className="archive-description">{project.description}</span><span className="tag-row">{project.tags.map(tag=><Tag key={tag.label} tone={tag.tone}>{tag.label}</Tag>)}</span></span>
       <span className="archive-meta"><span>{project.year}</span><ArrowRight size={20} aria-hidden="true" /></span>
     </button>)}</div>
-    <a className="button button-dark section-button" href={social.github} target="_blank" rel="noopener noreferrer">Explore Full Archive <ArrowRight size={20} aria-hidden="true" /></a>
+    <a className="button button-dark section-button" href={social.github} target="_blank" rel="noopener noreferrer">Explore Full Archive <span className="sr-only">(opens in a new tab)</span><ArrowRight size={20} aria-hidden="true" /></a>
   </section>;
 }
 
 export function Contact() {
-  return <section id="contact" className="section container contact" aria-labelledby="contact-heading">
+  return <section id="contact" tabIndex={-1} className="section container contact" aria-labelledby="contact-heading">
     <div className="contact-copy"><SectionHeading label="Contact"><span id="contact-heading">Let’s build<br />something worth<br />talking about.</span></SectionHeading>
       <p className="section-description">Open to software engineering opportunities, collaborations, and interesting projects.</p>
     </div>
     <div className="contact-actions"><div className="contact-doodle" aria-hidden="true"><span className="crayon-patch" /><Mail strokeWidth={1.2} /><Rays /></div>
       <a className="button button-dark" href={`mailto:${social.email}`}>Email me <ArrowRight size={21} aria-hidden="true" /></a>
-      <div className="social-links"><a className="button button-blue" href={social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><a className="button button-green" href={social.github} target="_blank" rel="noopener noreferrer">GitHub</a></div>
+      <div className="social-links"><a className="button button-blue" href={social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span className="sr-only"> (opens in a new tab)</span></a><a className="button button-green" href={social.github} target="_blank" rel="noopener noreferrer">GitHub<span className="sr-only"> (opens in a new tab)</span></a></div>
     </div>
   </section>;
 }
 
 export function Footer() {
-  return <footer className="footer container"><div><a className="wordmark footer-wordmark" href="#home">ALFRZHB<span className="wordmark-dot">.</span></a><h3>Muhammad Alfarizi Habibullah</h3><p className="footer-role">Software Engineer · Informatics Graduate</p><p className="footer-credit">Designed &amp; built by Muhammad Alfarizi Habibullah</p><p className="copyright">© 2026 ALFRZHB</p></div><a href="#home" className="back-top">Back to top <span aria-hidden="true">↑</span></a><div className="footer-marks" aria-hidden="true"><CodeXml /><span /><BookOpen /></div></footer>;
+  return <footer className="footer container"><div><a className="wordmark footer-wordmark" href="#home">ALFRZHB<span className="wordmark-dot">.</span></a><p className="footer-name">Muhammad Alfarizi Habibullah</p><p className="footer-role">Software Engineer · Informatics Graduate</p><p className="footer-credit">Designed &amp; built by Muhammad Alfarizi Habibullah</p><p className="copyright">© 2026 ALFRZHB</p></div><a href="#home" className="back-top">Back to top <span aria-hidden="true">↑</span></a><div className="footer-marks" aria-hidden="true"><CodeXml /><span /><BookOpen /></div></footer>;
 }
 
 export function DetailDialog({ detail, onClose }: {detail: Detail | null; onClose: () => void}) {
@@ -98,17 +98,25 @@ export function DetailDialog({ detail, onClose }: {detail: Detail | null; onClos
     if (!detail || !dialog.current) return;
     const previous = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
-    dialog.current.showModal();
+    const modal = dialog.current;
+    modal.showModal();
     document.body.style.overflow = 'hidden';
-    return ()=>{ dialog.current?.close(); document.body.style.overflow = previousOverflow; previous?.focus(); };
+    return ()=>{ modal.close(); document.body.style.overflow = previousOverflow; previous?.focus({ preventScroll: true }); };
   },[detail]);
   if (!detail) return null;
-  return <dialog ref={dialog} className="detail-dialog" aria-labelledby="detail-title" aria-describedby="detail-intro" onCancel={event=>{event.preventDefault();onClose();}} onClick={event=>{if(event.target===dialog.current) onClose();}}>
+  return <dialog ref={dialog} className="detail-dialog" aria-labelledby="detail-title" aria-describedby="detail-intro" onCancel={event=>{event.preventDefault();onClose();}} onClick={event=>{if(event.target===dialog.current) onClose();}} onKeyDown={event => {
+    if (event.key !== 'Tab') return;
+    const controls = event.currentTarget.querySelectorAll<HTMLElement>('button, a[href]');
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  }}>
     <div className="dialog-content"><div className="dialog-top"><p className="eyebrow">{detail.eyebrow}</p><button className="dialog-close" onClick={onClose} aria-label="Close detail" autoFocus><X size={23} /></button></div>
       <h2 id="detail-title">{detail.title}</h2><p className="detail-intro" id="detail-intro">{detail.intro}</p>
       {detail.draft && <p className="detail-intro">Draft content — awaiting personal review before final publication.</p>}
       {detail.sections.map(section=><section className="detail-section" key={section.heading}><h3>{section.heading}</h3><p>{section.text}</p></section>)}
-      {detail.link && <a href={detail.link.href} className="button button-dark" target="_blank" rel="noopener noreferrer">{detail.link.label} <ExternalLink size={18} aria-hidden="true" /></a>}
+      {detail.link && <a href={detail.link.href} className="button button-dark" target="_blank" rel="noopener noreferrer">{detail.link.label}<span className="sr-only"> (opens in a new tab)</span> <ExternalLink size={18} aria-hidden="true" /></a>}
       <button className="text-action dialog-back" onClick={onClose}>Back to portfolio</button>
     </div>
   </dialog>;
