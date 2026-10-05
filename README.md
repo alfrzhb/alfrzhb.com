@@ -1,99 +1,63 @@
-# ALFRZHB Portfolio V2
+# ALFRZHB
 
-Personal portfolio of **Muhammad Alfarizi Habibullah**, rebuilt as a mobile-first single-page experience.
+The personal portfolio of **Muhammad Alfarizi Habibullah**, a software engineer and Informatics graduate. One continuous responsive page introduces the person behind the work, selected projects, experience, education, learning notes, an archive, and contact links.
 
-> **Status:** design and implementation preparation in progress.
+The design implements the October 2026 hand-drawn mockups: off-white paper, charcoal typography, slate-blue body copy, muted crayon accents, and the original illustrated character. The mobile layout is designed from **390px** and validated down to 320px. Desktop uses the same visual language with a two-column hero and multi-column project, learning, writing, and archive cards.
 
-## Direction
+## Run locally
 
-Portfolio V2 is being designed around a simple visual system:
+Requires Node.js **22.12+** (or 20.19+) and npm.
 
-- editorial minimal layout
-- restrained hand-drawn / crayon personality
-- warm off-white paper-like surface
-- charcoal typography with muted accents
-- original illustrated character as the main personal brand asset
-- mobile-first responsive layout
-- real UI components rather than flattened mockup screenshots
-
-**ALFRZHB** is used as the personal wordmark and brand identity.
-
-## Planned Page Structure
-
-The portfolio is planned as one continuous page:
-
-1. Hero
-2. About
-3. Selected Work
-4. Experience
-5. Learning, Education & Credentials
-6. Writing / Notes
-7. Project Archive
-8. Contact
-9. Footer
-
-## Selected Work
-
-The first implementation will highlight a small set of representative projects:
-
-- **DDL Optimization + Generative AI**
-- **Ratama Project & Finance Tracker**
-- **ACM Monitoring System**
-
-Additional projects will live in the project archive.
-
-## Planned Stack
-
-The implementation is currently planned around:
-
-- React
-- Vite
-- TypeScript
-- responsive CSS
-- Cloudflare Pages
-
-The stack may be adjusted during implementation when there is a clear technical reason.
-
-## Development Approach
-
-The site will be implemented **mobile-first**.
-
-The existing design mockups are treated as **visual specifications**, not screenshots to embed. Illustrations, textures, and doodles will be used as assets where appropriate, while text, navigation, project cards, timelines, buttons, and content sections will remain real accessible web UI.
-
-Implementation flow:
-
-```text
-design references
-      ↓
-design tokens
-      ↓
-mobile implementation
-      ↓
-visual validation
-      ↓
-tablet / desktop adaptation
-      ↓
-interaction & motion
-      ↓
-accessibility / performance QA
-      ↓
-Cloudflare deployment
+```sh
+npm ci
+npm run dev
 ```
 
-## Current Status
+```sh
+npm run typecheck
+npm run build
+npm run preview
+```
 
-- [x] Visual direction defined
-- [x] Mobile section concepts prepared
-- [x] Core portfolio structure defined
-- [ ] Design tokens finalized
-- [ ] Character and illustration assets prepared for web
-- [ ] Mobile implementation
-- [ ] Desktop adaptation
-- [ ] Interaction and motion
-- [ ] Accessibility and performance review
-- [ ] Production deployment
+## What is included
 
----
+- Header, Hero, About, Selected Work, Experience, Learning, Writing, Archive, Contact, Footer.
+- Original full-body character in Hero and original head portrait in About. Source files are byte-for-byte copies; CSS integrates their surroundings without redrawing the character.
+- Mobile menu, working section anchors, three project case studies, four readable learning notes, and six archive details.
+- Native modal dialogs with Escape handling, focus restoration, background scroll locking, and browser focus containment.
+- Self-hosted fonts, reduced-motion support, skip link, semantic landmarks, and original favicon.
+- Static Cloudflare Pages output. No backend or credentials required to run the portfolio.
 
-**Muhammad Alfarizi Habibullah**  
-Software Engineer · Informatics Graduate
+## Project structure
+
+```text
+src/
+  App.tsx          Page composition and active detail state
+  components.tsx   Header, Hero, About, shared heading/tag/accent components
+  sections.tsx     Remaining sections and native detail dialog
+  data.ts          Projects, experience, education, notes, archive, contact links
+  styles.css       Design tokens and mobile-first responsive rules
+public/
+  assets/          Original character files
+  _headers         Cloudflare Pages response headers
+docs/
+  design-spec.md   Reference audit, design tokens, component architecture
+  validation.md    Visual and functional verification
+  deployment.md    Cloudflare Pages deployment instructions
+```
+
+`qa.html` is a development-only responsive review fixture. It is not included in the production build. The standalone `alfrzhb-preview.html` in the delivery package contains the compiled application, fonts, and original images inline so the page can be reviewed without installing anything. The production deployment uses the normal `dist` directory.
+
+## Content notes
+
+Project order follows the agreed specification: DDL Optimization + Generative AI, Ratama Project & Finance Tracker, and ACM Monitoring System. Miniature project panels are HTML/CSS diagrams of each product's function, not claimed production screenshots. The four supplied phone mockups are never embedded.
+
+The four Writing entries include new, editable note drafts based on the topics in the mockup. Edit their content in `src/data.ts` before publishing under your own name. BNSP is described as assessment completed with certificate pending, matching the available status rather than claiming a issued certificate.
+
+Contact links use the previously shared public email, LinkedIn, and GitHub profile. Company-internal code and operational data are not included.
+
+## Cloudflare Pages
+
+Build command: `npm run build`. Output directory: `dist`. Root directory: repository root. Node version: `22`. See `docs/deployment.md` for Git integration and direct upload options.
+
+The implementation is ready for Pages. No live Cloudflare project, account, or domain is changed by this package.
