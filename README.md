@@ -55,9 +55,9 @@ docs/                    Audit, design, validation, deployment guidance
 
 Education follows the owner's correction. BNSP is **assessment completed, certificate pending**. Writing entries are editable drafts labelled in cards and dialogs; personally review them before final publication. Existing project and experience entries are retained from repository data without adding achievements. Uncorroborated numerical evaluation, staging, and award claims were removed; see the [audit](docs/audit.md).
 
-Vite fingerprints runtime illustrations. The full-body PNG is unchanged. The portrait uses a lossless WebP encoding of a 320px resized copy for its maximum 160px display at 2? density. Original masters remain in the repository; the unused full-resolution portrait is excluded from `dist`. Font weights are retained where used; unused WOFF fallbacks are excluded.
+Vite fingerprints runtime illustrations. The full-body PNG is unchanged. The portrait uses a lossless WebP encoding of a 320px resized copy for its maximum 160px display at 2x density. Original masters remain in the repository; the unused full-resolution portrait is excluded from `dist`. Font weights are retained where used; unused WOFF fallbacks are excluded.
 
-SEO is generated from `src/site.ts`: title, description, canonical `https://alfrzhb.com`, Open Graph, Twitter/X cards, and Person JSON-LD with the existing GitHub/LinkedIn profiles. `robots.txt` and the one-URL `sitemap.xml` are generated into `dist`. The 1200?630 sharing image is a brand card without fabricated product screenshots. Update that image when branding changes.
+SEO is generated from `src/site.ts`: title, description, canonical `https://alfrzhb.com`, Open Graph, Twitter/X cards, and Person JSON-LD with the existing GitHub/LinkedIn profiles. `robots.txt` and the one-URL `sitemap.xml` are generated into `dist`. The 1200x630 sharing image is a brand card without fabricated product screenshots. Update that image when branding changes.
 
 ## Deployment target
 

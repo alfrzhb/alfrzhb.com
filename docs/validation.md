@@ -58,12 +58,12 @@ Robots declares the canonical sitemap. The sitemap has exactly one homepage URL;
 | Main JavaScript | 259.40 KB | 80.89 KB |
 | CSS | 23.70 KB | 6.27 KB |
 | HTML | 2.76 KB | 0.88 KB |
-| Six WOFF2 fonts, total | 101.48 KB | ? |
-| Hero PNG | 149.21 KB | ? |
-| Portrait WebP | 42.65 KB | ? |
-| Sharing PNG (1200?630) | 23.47 KB | ? |
-| Apple icon | 5.61 KB | ? |
-| PNG favicon | 1.29 KB | ? |
+| Six WOFF2 fonts, total | 101.48 KB | N/A |
+| Hero PNG | 149.21 KB | N/A |
+| Portrait WebP | 42.65 KB | N/A |
+| Sharing PNG (1200x630) | 23.47 KB | N/A |
+| Apple icon | 5.61 KB | N/A |
+| PNG favicon | 1.29 KB | N/A |
 
 Sizes use decimal KB. Runtime JavaScript remains around the baseline size; no new runtime dependencies were introduced. Six unused WOFF fallback files were removed. The portrait payload is about 43% smaller than its 74.74 KB master.
 
