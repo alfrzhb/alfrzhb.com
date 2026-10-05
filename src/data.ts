@@ -4,6 +4,7 @@ export type Detail = {
   eyebrow: string;
   title: string;
   intro: string;
+  draft?: boolean;
   sections: { heading: string; text: string }[];
   link?: { label: string; href: string };
 };
@@ -77,8 +78,7 @@ export const experience = [
 ] as const;
 
 export const education = [
-  {title:'S2 Kenotariatan',description:'Universitas Tarumanagara (UNTAR)',status:'2026 – Present',tone:'blue',icon:'graduate'},
-  {title:'S1 Informatika',description:'UIN Sunan Kalijaga',status:'Graduate',tone:'green',icon:'graduate'},
+  {title:'S1 Informatika',description:'UIN Sunan Kalijaga · Yudisium completed. Graduation planned for November 2026.',status:'Yudisium completed',tone:'green',icon:'graduate'},
   {title:'Bangkit Academy 2024',description:'Android Learning Path',icon:'book'},
   {title:'DBS Coding Camp',description:'Capstone: Harumnesia',icon:'code'},
   {title:'BNSP Software Engineer',description:'Assessment completed · certificate pending',icon:'credential'},
@@ -86,7 +86,7 @@ export const education = [
 
 export const notes: (Detail & {category:string;tone:Tone;description:string;icon:string})[] = [
   {
-    id:'binary-search',category:'Algorithms',tone:'peach',icon:'file',eyebrow:'Learning note · Algorithms',title:'Understanding Binary Search',description:'How to find the search space efficiently and reduce the problem size.',
+    id:'binary-search',draft:true,category:'Algorithms',tone:'peach',icon:'file',eyebrow:'Draft learning note · Algorithms',title:'Understanding Binary Search',description:'How to find the search space efficiently and reduce the problem size.',
     intro:'Binary search is a way to find a value by repeatedly cutting a sorted search space in half.',
     sections:[
       {heading:'Start with the right condition',text:'The data must be sorted, or the question must have a monotonic answer. In a sorted list, values to the left of a position are smaller and values to the right are larger. That is what makes it safe to discard half of the remaining candidates.'},
@@ -96,7 +96,7 @@ export const notes: (Detail & {category:string;tone:Tone;description:string;icon
     ],
   },
   {
-    id:'big-o',category:'Complexity',tone:'blue',icon:'chart',eyebrow:'Learning note · Complexity',title:'Big O Without Overcomplicating It',description:'A practical way to understand time and space complexity.',
+    id:'big-o',draft:true,category:'Complexity',tone:'blue',icon:'chart',eyebrow:'Draft learning note · Complexity',title:'Big O Without Overcomplicating It',description:'A practical way to understand time and space complexity.',
     intro:'Big O describes how an algorithm’s resource needs grow as its input grows. It is a model of growth, not a stopwatch.',
     sections:[
       {heading:'Count the growing work',text:'Reading one array item by index is O(1). Reading every item once is O(n). Comparing every pair is usually O(n²). Binary search on sorted data is O(log n), because it discards half of the search space at each step.'},
@@ -106,8 +106,8 @@ export const notes: (Detail & {category:string;tone:Tone;description:string;icon
     ],
   },
   {
-    id:'cloudflare',category:'Cloudflare',tone:'green',icon:'cloud',eyebrow:'Learning note · Cloudflare',title:'Building With Pages, Workers, and D1',description:'Notes on practical architecture choices and what I’ve learned.',
-    intro:'For Ratama, I separated the static frontend, application API, and database into Cloudflare Pages, Workers, and D1.',
+    id:'cloudflare',draft:true,category:'Cloudflare',tone:'green',icon:'cloud',eyebrow:'Draft learning note · Cloudflare',title:'Building With Pages, Workers, and D1',description:'A draft overview of static frontends, application APIs, and data storage.',
+    intro:'An overview of separating a static frontend, application API, and database into Cloudflare Pages, Workers, and D1.',
     sections:[
       {heading:'Give each layer a job',text:'Pages serves the frontend. Workers handles application requests and business rules. D1 stores structured records. Keeping these responsibilities clear makes the data flow easier to document and reason about.'},
       {heading:'Access belongs at the boundaries',text:'The browser is not a trusted source of permissions. The API must validate input and enforce role-based access. A protected staging environment is useful, but it does not replace application authorization.'},
@@ -116,7 +116,7 @@ export const notes: (Detail & {category:string;tone:Tone;description:string;icon
     ],
   },
   {
-    id:'harumnesia-v2',category:'Projects',tone:'rose',icon:'book',eyebrow:'Project note · Harumnesia',title:'Rebuilding Harumnesia V2',description:'Turning an old capstone into a cleaner, production-ready remake.',
+    id:'harumnesia-v2',draft:true,category:'Projects',tone:'rose',icon:'book',eyebrow:'Draft project note · Harumnesia',title:'Rebuilding Harumnesia V2',description:'A draft overview of revisiting the perfume recommendation capstone.',
     intro:'Harumnesia V2 revisits the DBS Coding Camp perfume recommendation capstone while preserving the original version as an archive.',
     sections:[
       {heading:'Preserve the original',text:'The original capstone remains a record of what the team submitted. V2 lives in a new monorepo, so the remake can improve structure and deployment without rewriting that history.'},

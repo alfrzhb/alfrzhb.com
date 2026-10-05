@@ -56,11 +56,11 @@ export function Learning() {
 export function Writing({ onOpen }: {onOpen: (detail: Detail) => void}) {
   return <section id="writing" className="section container writing" aria-labelledby="writing-heading">
     <SectionHeading label="Writing"><span id="writing-heading">Things I’m learning<br />&amp; writing about</span></SectionHeading>
-    <p className="section-description">Notes, ideas, and reflections from what I build and study.</p>
+    <p className="section-description">Editable learning drafts. These notes await personal review before final publication.</p>
     <div className="notes-grid">{notes.map(note=><article className="note-card" key={note.id}>
-      <SketchIcon name={note.icon} /><div><span className={`category category-${note.tone}`}>{note.category}</span><h3>{note.title}</h3><p>{note.description}</p><button className="text-action" onClick={()=>onOpen(note)} aria-label={`Read note: ${note.title}`}>Read note <ArrowRight size={15} aria-hidden="true" /></button></div>
+      <SketchIcon name={note.icon} /><div><span className={`category category-${note.tone}`}>{note.category} · Draft</span><h3>{note.title}</h3><p>{note.description}</p><button className="text-action" onClick={()=>onOpen(note)} aria-label={`Read draft: ${note.title}`}>Read draft <ArrowRight size={15} aria-hidden="true" /></button></div>
     </article>)}</div>
-    <button className="button button-dark section-button" onClick={()=>onOpen({id:'all-notes',eyebrow:'Writing · Learning notebook',title:'All learning notes',intro:'Four notes from what I build and study.',sections:notes.flatMap(note=>[{heading:note.title,text:note.intro},...note.sections])})}>See All Notes <ArrowRight size={20} aria-hidden="true" /></button>
+    <button className="button button-dark section-button" onClick={()=>onOpen({id:'all-notes',draft:true,eyebrow:'Writing · Draft learning notebook',title:'All learning notes',intro:'Four editable drafts awaiting personal review before final publication.',sections:notes.flatMap(note=>[{heading:note.title,text:note.intro},...note.sections])})}>See All Notes <ArrowRight size={20} aria-hidden="true" /></button>
   </section>;
 }
 
@@ -106,6 +106,7 @@ export function DetailDialog({ detail, onClose }: {detail: Detail | null; onClos
   return <dialog ref={dialog} className="detail-dialog" aria-labelledby="detail-title" aria-describedby="detail-intro" onCancel={event=>{event.preventDefault();onClose();}} onClick={event=>{if(event.target===dialog.current) onClose();}}>
     <div className="dialog-content"><div className="dialog-top"><p className="eyebrow">{detail.eyebrow}</p><button className="dialog-close" onClick={onClose} aria-label="Close detail" autoFocus><X size={23} /></button></div>
       <h2 id="detail-title">{detail.title}</h2><p className="detail-intro" id="detail-intro">{detail.intro}</p>
+      {detail.draft && <p className="detail-intro">Draft content — awaiting personal review before final publication.</p>}
       {detail.sections.map(section=><section className="detail-section" key={section.heading}><h3>{section.heading}</h3><p>{section.text}</p></section>)}
       {detail.link && <a href={detail.link.href} className="button button-dark" target="_blank" rel="noopener noreferrer">{detail.link.label} <ExternalLink size={18} aria-hidden="true" /></a>}
       <button className="text-action dialog-back" onClick={onClose}>Back to portfolio</button>
