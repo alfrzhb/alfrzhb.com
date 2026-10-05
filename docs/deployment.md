@@ -1,40 +1,35 @@
-# Cloudflare Pages
+# Cloudflare Pages deployment preparation
 
-This project is a static React/Vite application. A `dist/index.html` build plus static assets is all that Pages needs. No Functions, database, secret, or Workers runtime is required.
+**No deployment was performed in this phase.** No Cloudflare account settings, project, DNS, or domain were changed. GitHub CI validates source only, without deployment or secrets.
 
-## Git integration
+The application produces static `dist` files. It needs no Pages Functions, Worker, database, backend, or runtime secrets.
 
-1. Put this source in the intended GitHub repository.
-2. In Cloudflare, create a Pages project and connect that repository.
-3. Use these build settings:
+## Settings for a later authorized deployment
 
 | Setting | Value |
 | --- | --- |
 | Framework | Vite |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | repository root |
-| Node version | `22` |
+| Output directory | `dist` |
+| Root directory | Repository root |
+| Node | Node 22 LTS, at least 22.13 |
+| Production branch | `main`, after manual PR review |
 
-4. Review the generated `pages.dev` URL before attaching a custom domain.
-5. Attach `alfrzhb.com` only when you intend to replace the existing portfolio deployment. This implementation has not changed the current domain.
+Complete the [pre-deployment checklist](pre-deployment-checklist.md) first. When separately authorized, inspect a Pages preview before attaching `alfrzhb.com`. Existing Git integrations can deploy automatically on pushes; review branch controls before enabling integration. This phase does not change those controls.
 
-## Direct upload
+## Build output and headers
 
-Run `npm ci` and `npm run build`. Upload the **contents of `dist`**, or the supplied `alfrzhb-cloudflare-pages.zip`, through Cloudflare Pages Direct Upload.
+`npm ci` uses the lockfile. The build generates metadata from `src/site.ts`, a one-URL sitemap, robots instructions, and the hash of the exact inline Person JSON-LD. It resolves `{{jsonLdHash}}` in the `_headers` template when writing `dist/_headers`. Only `dist` is a deployment artifact.
 
-If your own shell is already authenticated with Cloudflare, an alternative is:
+- `/` and `/index.html` revalidate (`no-cache`).
+- `/assets/` contains Vite-fingerprinted files only, with one-year immutable caching. Unhashed icons/sharing assets remain outside it.
+- MIME sniffing is disabled; referrer and camera/microphone/location protections are retained.
+- CSP permits local scripts/styles/fonts/images, the exact JSON-LD hash, and data images used by the paper texture. It denies plugins, forms, base URL overrides, and framing. External profile links use ordinary navigation.
+- `X-Frame-Options: DENY` complements `frame-ancestors 'none'`.
+- Pages project/branch domains receive `X-Robots-Tag: noindex`; the canonical domain remains indexable.
 
-```sh
-npx wrangler pages deploy dist --project-name <your-pages-project>
-```
+Navigation stays on section anchors. No routes or custom SPA rewrites were added. Original masters are not copied wholesale into the build; only the imported hero master is emitted.
 
-The command above is an instruction for your authenticated environment, not evidence that a deployment was performed here.
+Vite preview does not emulate `_headers`. Hardening QA uses a local server applying built policy. After a future deployment, verify actual root/asset responses, CSP behavior, and preview noindex rules on Cloudflare.
 
-## Preview before publishing
-
-`npm run preview` serves the production build locally. The separate standalone `alfrzhb-preview.html` is for convenient review and is not the deployment artifact.
-
-All page navigation uses section anchors, so no custom SPA redirects are required. Cloudflare copies `_headers` from `public` into `dist` during the build.
-
-Verified against the official [React Pages guide](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/), [build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/), and [Direct Upload guide](https://developers.cloudflare.com/pages/get-started/direct-upload/) on 2 October 2026.
+References: [Cloudflare headers](https://developers.cloudflare.com/pages/configuration/headers/) and [build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/). These describe future deployment settings, not a deployment record.

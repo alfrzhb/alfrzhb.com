@@ -1,63 +1,64 @@
 # ALFRZHB
 
-The personal portfolio of **Muhammad Alfarizi Habibullah**, a software engineer and Informatics graduate. One continuous responsive page introduces the person behind the work, selected projects, experience, education, learning notes, an archive, and contact links.
+Personal portfolio of **Muhammad Alfarizi Habibullah**, a software engineer with S1 Informatika at UIN Sunan Kalijaga. Yudisium is completed; graduation is planned for November 2026. One responsive page contains selected work, experience, education, draft learning notes, an archive, and contact links.
 
-The design implements the October 2026 hand-drawn mockups: off-white paper, charcoal typography, slate-blue body copy, muted crayon accents, and the original illustrated character. The mobile layout is designed from **390px** and validated down to 320px. Desktop uses the same visual language with a two-column hero and multi-column project, learning, writing, and archive cards.
+## Current status
 
-## Run locally
+Pre-deployment hardening is under review. **No Cloudflare deployment or domain change was performed in this phase.** Complete the [pre-deployment checklist](docs/pre-deployment-checklist.md) before publishing. Case-study and article routes remain future work.
 
-Requires Node.js **22.12+** (or 20.19+) and npm.
+## Stack and design
+
+React 19, Vite 7, TypeScript, Lucide icons, and self-hosted DM Sans / Kalam. ESLint validates TypeScript and React Hooks. GitHub Actions checks pushes and pull requests using Node 22 without deployment or secrets.
+
+The mobile-first editorial design is preserved: off-white paper, charcoal headings, slate-blue body text, muted crayon details, and original character illustrations. Desktop adapts the same system. No character was redrawn or regenerated.
+
+## Local development
+
+Use **Node 22 LTS, version 22.13 or later within Node 22**, and npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
+Required checks and local production preview:
+
 ```sh
+npm run lint
 npm run typecheck
 npm run build
 npm run preview
 ```
 
-## What is included
-
-- Header, Hero, About, Selected Work, Experience, Learning, Writing, Archive, Contact, Footer.
-- Original full-body character in Hero and original head portrait in About. Source files are byte-for-byte copies; CSS integrates their surroundings without redrawing the character.
-- Mobile menu, working section anchors, three project case studies, four readable learning notes, and six archive details.
-- Native modal dialogs with Escape handling, focus restoration, background scroll locking, and browser focus containment.
-- Self-hosted fonts, reduced-motion support, skip link, semantic landmarks, and original favicon.
-- Static Cloudflare Pages output. No backend or credentials required to run the portfolio.
+Vite preview serves static files but does not apply Cloudflare `_headers`. See [verification](docs/validation.md) for policy testing.
 
 ## Project structure
 
 ```text
+.github/workflows/ci.yml  Install, lint, typecheck, build
+assets/masters/          Original illustrations, preserved byte for byte
 src/
-  App.tsx          Page composition and active detail state
-  components.tsx   Header, Hero, About, shared heading/tag/accent components
-  sections.tsx     Remaining sections and native detail dialog
-  data.ts          Projects, experience, education, notes, archive, contact links
-  styles.css       Design tokens and mobile-first responsive rules
-public/
-  assets/          Original character files
-  _headers         Cloudflare Pages response headers
-docs/
-  design-spec.md   Reference audit, design tokens, component architecture
-  validation.md    Visual and functional verification
-  deployment.md    Cloudflare Pages deployment instructions
+  App.tsx                Page composition and active detail state
+  components.tsx         Header, Hero, About, shared primitives
+  sections.tsx           Remaining sections and native modal dialog
+  data.ts                Projects, experience, education, drafts, contact URLs
+  site.ts                Canonical URL and shared SEO information
+  assets/                Optimized portrait derivative
+  fonts.css              WOFF2-only self-hosted font definitions
+  styles.css             Design tokens and mobile-first responsive rules
+public/                  Favicons, sharing image, headers template
+vite.config.ts           Metadata, robots, sitemap, CSP hash generation
+docs/                    Audit, design, validation, deployment guidance
 ```
 
-`qa.html` is a development-only responsive review fixture. It is not included in the production build. The standalone `alfrzhb-preview.html` in the delivery package contains the compiled application, fonts, and original images inline so the page can be reviewed without installing anything. The production deployment uses the normal `dist` directory.
+## Content and asset maintenance
 
-## Content notes
+Education follows the owner's correction. BNSP is **assessment completed, certificate pending**. Writing entries are editable drafts labelled in cards and dialogs; personally review them before final publication. Existing project and experience entries are retained from repository data without adding achievements. Uncorroborated numerical evaluation, staging, and award claims were removed; see the [audit](docs/audit.md).
 
-Project order follows the agreed specification: DDL Optimization + Generative AI, Ratama Project & Finance Tracker, and ACM Monitoring System. Miniature project panels are HTML/CSS diagrams of each product's function, not claimed production screenshots. The four supplied phone mockups are never embedded.
+Vite fingerprints runtime illustrations. The full-body PNG is unchanged. The portrait uses a lossless WebP encoding of a 320px resized copy for its maximum 160px display at 2x density. Original masters remain in the repository; the unused full-resolution portrait is excluded from `dist`. Font weights are retained where used; unused WOFF fallbacks are excluded.
 
-The four Writing entries include new, editable note drafts based on the topics in the mockup. Edit their content in `src/data.ts` before publishing under your own name. BNSP is described as assessment completed with certificate pending, matching the available status rather than claiming a issued certificate.
+SEO is generated from `src/site.ts`: title, description, canonical `https://alfrzhb.com`, Open Graph, Twitter/X cards, and Person JSON-LD with the existing GitHub/LinkedIn profiles. `robots.txt` and the one-URL `sitemap.xml` are generated into `dist`. The 1200x630 sharing image is a brand card without fabricated product screenshots. Update that image when branding changes.
 
-Contact links use the previously shared public email, LinkedIn, and GitHub profile. Company-internal code and operational data are not included.
+## Deployment target
 
-## Cloudflare Pages
-
-Build command: `npm run build`. Output directory: `dist`. Root directory: repository root. Node version: `22`. See `docs/deployment.md` for Git integration and direct upload options.
-
-The implementation is ready for Pages. No live Cloudflare project, account, or domain is changed by this package.
+Static **Cloudflare Pages**: build `npm run build`, output `dist`, repository root, Node 22. The build resolves the JSON-LD hash token in `public/_headers`; deploy built output, never the template directory. [Deployment guidance](docs/deployment.md) covers a later, separately authorized phase.
