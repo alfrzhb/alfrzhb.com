@@ -1,45 +1,78 @@
-# Verification
+# Pre-deployment verification
 
-## Required first slice
+Verified locally on 5 October 2026. Baseline: `ad21b50`. Current architecture remains one page with section anchors and dialogs. No Cloudflare deployment, merge, account setting, DNS, or domain change was performed.
 
-Hero and About were implemented and visually inspected in a browser at a 390px layout width before the remaining section components were created. The inspection covered the original character, heading wraps, button placement, body copy, head portrait, and interest tags. The source remained in the hand-drawn editorial direction of the supplied references.
+## Quality gates
 
-## Responsive checks
+Node **22.23.3** was used for the clean install and quality commands. The host also has Node 23; validation explicitly selected Node 22 rather than relying on that host default.
 
-| Layout width | Result |
+| Command | Result |
 | --- | --- |
-| 320px | No horizontal overflow; all headings, descriptions, links, and buttons within viewport |
-| 390px | Mobile Hero and About visually checked; all sections remain within viewport |
-| 768px | Tablet grid visually checked; no horizontal overflow |
-| 1440px | Two-column Hero, desktop navigation, and Contact visually checked; no horizontal overflow |
+| `npm ci` | Passed; no install warnings; npm reported 0 vulnerabilities |
+| `npm run lint` | Passed with zero warnings |
+| `npm run typecheck` | Passed |
+| `npm run build` | Passed; no build warnings |
+| `git diff --check` | Passed |
 
-The development review fixture compensates for the browser's 15px non-overlay scrollbar so these values describe the actual document layout width, rather than just the iframe's outer width. Mobile viewport height was 844px for the full-page functional review.
+GitHub Actions runs the same four commands on Node 22 for push and pull-request events, using read-only repository permission and SHA-pinned actions. It contains no deployment step or secrets.
 
-## Functional checks
+## Browser and responsive checks
 
-- Header menu opens, focuses its first link, closes after anchor selection, and closes with Escape while returning focus to its toggle.
-- Every in-page anchor resolves to a real element.
-- Three project case studies, four learning notes, and six archive details open with the matching content.
-- Native detail dialog is modal, remains within the viewport, closes with Escape or its close control, and returns focus to its trigger.
-- Email, LinkedIn, and GitHub point to the previously supplied public destinations. Link destinations were verified in the rendered DOM; external profile availability was not tested.
-- Self-hosted fonts finish loading. Both original character images load.
-- Character image stays within its blending surface, preserving the source asset without white overflow strips.
-- The reduced-motion stylesheet removes smooth scrolling and transitions when the preference is enabled.
-- At 200% text size (32px body font), the 390px layout remains within the viewport. An archive grid containment issue found by this check was corrected.
-- The See All Notes action opens the complete four-note notebook.
-- TypeScript check and production Vite build pass. Main JavaScript is approximately 258 KB raw / 81 KB gzip, CSS approximately 23 KB raw / 6 KB gzip.
+Automated QA used Playwright Chromium 153 and axe-core, installed outside the repository. The production `dist` was served locally with the generated CSP, cache, MIME, referrer, permissions, and anti-framing headers applied. Vite preview alone does not apply `_headers`.
 
-## Source asset identity
+| Viewport width | 100% text | 200% root text | Menu/dialog checks |
+| --- | --- | --- | --- |
+| 320px | Passed | Passed | Passed |
+| 360px | Passed | Passed | Passed |
+| 390px | Passed | Passed | Passed |
+| 430px | Passed | Passed | Passed |
+| 768px | Passed | Passed | Passed |
+| 1024px | Passed | Passed | Passed |
+| 1366px | Passed | Passed | Passed |
+| 1440px | Passed | Passed | Passed |
 
-Original upload and runtime copy share these SHA-256 hashes:
+All sixteen combinations had document scroll width equal to viewport width, with no content-element horizontal protrusions. Three representative dialogs were measured in each combination (48 checks); their content fit the dialog width. Mobile menus were also opened and checked at both text scales. Header/heading wrapping, hero scaling, cards, timeline, learning, notes, archive, contact/footer, and dialog layout were reviewed in screenshots; targeted 320px/200% and tablet screenshots checked portrait and education-tag reflow.
 
-| Asset | SHA-256 |
-| --- | --- |
-| Full body | `f0955a741500bf436c02d61d996e624f9b4db5df8ff97b3a9d1451b903920205` |
-| Head | `4307175ba5fcb941b28f433f13c6489a13ad31d2abb81c03561ca72c662323fb` |
+The 200% test changes the root font size to 32px. It does not represent a separately executed OS text-scaling or browser-zoom test. Native dialog content remains vertically scrollable at enlarged text sizes. No horizontal clipping was added to hide problems.
 
-No supplied mockup is included in the runtime build. No character was generated, redrawn, or altered. The project miniatures are interface diagrams authored in HTML/CSS, not copied or invented production screenshots.
+## Accessibility and functional results
 
-## Publishing status
+- axe WCAG A/AA checks reported **zero violations** on the page and three representative open dialogs. This is an automated fundamentals check, not a complete accessibility certification or screen-reader audit.
+- One H1, named sections, header/main/nav/footer landmarks, heading progression, descriptive image alternatives, decorative exclusions, and visible focus indicators are retained. Footer identity text no longer adds an out-of-order heading.
+- Muted normal text was darkened slightly within the same palette; its contrast against paper is approximately **4.97:1**. Body and action colors passed axe contrast checks.
+- Keyboard skip link transfers focus to main. All seven navigation anchors transfer focus to their destinations on mobile and desktop; every in-page anchor resolves.
+- Hamburger opens/focuses its first link and closes on Escape, section selection, Tab leaving the disclosure, outside click, or breakpoint change. Focus is restored or moved to the visible destination as appropriate.
+- All **14 detail triggers** passed: three work dialogs, four note dialogs, the combined notebook, and six archive dialogs. Tests covered initial close-button focus, Tab/Shift+Tab containment, Escape/close controls, background scroll locking/restoration, and trigger focus restoration.
+- Back-to-top resolves to home. Reduced-motion preference removes smooth scrolling/transitions.
+- Main action targets are at least 44px high. Note/category/status text reflows without overlapping neighboring content.
+- No production console errors, failed local asset responses, or CSP errors were observed during the functional suite. Fonts, original hero, portrait derivative, icons, OG image, robots, sitemap, and built scripts/styles loaded.
 
-Prepared for Cloudflare Pages, with a static `dist` build and documented deployment settings. A live deployment was not performed because this session did not provide Cloudflare account access. The existing domain was not modified.
+## SEO, asset identity, and output
+
+The HTML has one canonical `https://alfrzhb.com`, title/description, theme color, SVG/PNG favicon and Apple icon, Open Graph, Twitter/X large card, and Person JSON-LD. The JSON-LD contains only owner name, canonical identity, software-engineer role, and existing GitHub/LinkedIn profiles. Its exact SHA-256 matches the generated CSP allowlist. No fake social handles were added.
+
+Robots declares the canonical sitemap. The sitemap has exactly one homepage URL; dialog content is not represented as invented routes. Every `/assets/` file is fingerprinted, and no template placeholders or temporary review pages appear in `dist`.
+
+| Output | Raw size | Gzip (Vite report) |
+| --- | --- | --- |
+| Main JavaScript | 259.40 KB | 80.89 KB |
+| CSS | 23.70 KB | 6.27 KB |
+| HTML | 2.76 KB | 0.88 KB |
+| Six WOFF2 fonts, total | 101.48 KB | ? |
+| Hero PNG | 149.21 KB | ? |
+| Portrait WebP | 42.65 KB | ? |
+| Sharing PNG (1200?630) | 23.47 KB | ? |
+| Apple icon | 5.61 KB | ? |
+| PNG favicon | 1.29 KB | ? |
+
+Sizes use decimal KB. Runtime JavaScript remains around the baseline size; no new runtime dependencies were introduced. Six unused WOFF fallback files were removed. The portrait payload is about 43% smaller than its 74.74 KB master.
+
+Both original master SHA-256 hashes match the baseline exactly; see `assets/README.md`. The hero runtime PNG also preserves those original bytes. The decoded portrait WebP equals the LANCZOS-resized reference pixel for pixel. A larger lossless hero WebP was rejected. No illustrations were regenerated, redrawn, or traced.
+
+## External links and remaining review
+
+The [owner's GitHub profile](https://github.com/alfrzhb), [DDL repository](https://github.com/alfrzhb/tugas-akhir), [Harumnesia repository](https://github.com/Harumnesia/harumnesia), and [Harumnesia application](https://harumnesia.pages.dev/) were reachable. The public profile also corroborates the existing email and LinkedIn destination. External links use new-tab notice, `noopener`, and `noreferrer`. The email link has the correct `mailto:` destination; no email was sent.
+
+LinkedIn returned HTTP 999 to automated retrieval. Its destination is preserved and supported by the public GitHub profile, but interactive availability still needs manual review. Owner approval of internship/organization facts and writing drafts is outstanding publication work; unsupported numerical achievement claims were removed. BNSP remains certificate pending, and graduation remains planned for November 2026.
+
+Cloudflare response behavior, preview-domain noindex matching, DNS, and live-domain asset loading must be verified after a separately authorized future deployment. No deployment was used as part of these checks. Other browser engines and assistive technologies were not tested in this phase.
