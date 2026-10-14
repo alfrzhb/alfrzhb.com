@@ -154,7 +154,7 @@ p { color: var(--body); overflow-wrap: anywhere; }
 .note-card p{font-size:1rem;line-height:1.35;}
 .text-action{display:flex;align-items:center;gap:9px;border:0;padding:7px 0 2px;background:transparent;text-decoration:underline;text-underline-offset:4px;color:#293d57;font-size:.89rem;font-weight:500;cursor:pointer;min-height:44px;}
 .text-action:hover{color:var(--muted)}
-.archive-card{display:grid;grid-template-columns:49px minmax(0,1fr) 52px;align-items:center;gap:9px;text-align:left;padding:11px 10px;border:1.3px solid var(--line);border-radius:12px 10px 14px 11px;background:transparent;cursor:pointer;transition:background .18s;}
+.archive-card{container:archive-card / inline-size;display:grid;grid-template-columns:49px minmax(0,1fr) minmax(52px,max-content);align-items:center;gap:9px;text-align:left;padding:11px 10px;border:1.3px solid var(--line);border-radius:12px 10px 14px 11px;background:transparent;cursor:pointer;transition:background .18s;}
 .archive-card:hover{background:#f4eee4;}.archive-card .sketch-icon{width:46px;height:53px;}.archive-card .sketch-icon svg{width:36px;height:36px}
 .archive-copy{min-width:0;overflow-wrap:anywhere;}
 .archive-title{display:block;font-size:1.03rem;font-weight:700;line-height:1.2;letter-spacing:-.02em;}
@@ -162,6 +162,14 @@ p { color: var(--body); overflow-wrap: anywhere; }
 .archive-card .tag-row{margin-top:6px;gap:5px;}.archive-card .tag{font-size:.73rem;padding:2px 9px;}
 .archive-meta{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;align-self:stretch;color:var(--body);font-size:.72rem;overflow-wrap:anywhere;text-align:right;gap:15px;padding-top:2px;}
 .archive-meta svg{color:var(--ink);margin-bottom:6px;}
+.archive-meta > span{white-space:nowrap;}
+/* Keep the 390px composition; give cramped or enlarged copy the date's track. */
+@container archive-card (max-width: 18rem) {
+  .archive-card .sketch-icon{grid-column:1;grid-row:1 / 3;}
+  .archive-copy{grid-column:2 / -1;grid-row:1;}
+  .archive-meta{grid-column:2 / -1;grid-row:2;flex-direction:row;align-items:center;text-align:left;gap:9px;padding-top:0;}
+  .archive-meta svg{flex-shrink:0;margin-bottom:0;}
+}
 .contact .section-heading{margin-bottom:28px;}.contact h2{font-size:clamp(2.3rem,10vw,4.2rem);line-height:1.18;}
 .contact .section-description{max-width:350px;font-size:1.08rem;line-height:1.55;margin-top:0;}
 .contact-actions{position:relative;margin-top:24px;}
@@ -215,16 +223,19 @@ p { color: var(--body); overflow-wrap: anywhere; }
   .about-portrait img { width: 160px; height: 160px; }
   .interest-tags { justify-content: flex-start; }
   .section-end { grid-column: 1 / -1; }
-  .project-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+  /* Fit 17.5rem cards to the available container; text enlargement reflows them. */
+  .project-grid {grid-template-columns:repeat(auto-fit,minmax(min(100%,17.5rem),1fr));gap:18px;align-items:start;}
   .project-card{display:flex;flex-direction:column;padding:16px;}
-  .project-card-top{grid-template-columns:28px 1fr;gap:7px;}.project-year{grid-column:1/-1;grid-row:2;justify-self:end;margin-top:-6px;}
-  .project-preview{height:82px;max-width:none;}.project-card h3{font-size:1.05rem;}
+  .project-card-top{grid-template-columns:28px minmax(0,1fr);gap:7px;}.project-year{grid-column:1/-1;grid-row:2;justify-self:end;margin-top:-6px;}
+  .project-preview{height:82px;max-width:248px;justify-self:center;}.project-card h3{font-size:1.05rem;}
   .project-card .case-study{margin-top:auto;align-self:start;}.project-card .tag-row{margin-bottom:17px;}
   .section-button{width:fit-content;min-width:230px;margin:24px auto 0;}
   .section-description{font-size:1.05rem;margin-bottom:26px;}
   .timeline{max-width:780px;margin-top:38px;}.timeline li{grid-template-columns:1fr 88px;gap:25px;padding-left:35px;padding-bottom:38px;}
   .timeline h3{font-size:1.25rem;}.timeline-description{font-size:1rem;max-width:550px;}.timeline .sketch-icon{width:75px;height:75px;margin-top:13px;}.timeline .sketch-icon svg{width:52px;height:52px;}
   .learning-grid,.notes-grid,.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  /* Retain at most two Archive columns; enlarged text can use a full row. */
+  .archive-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,max(18rem,calc(50% - 8px))),1fr));}
   .learning-card{min-height:106px;}.learning-card h3{font-size:1.08rem;}
   .note-card{padding:18px;grid-template-columns:56px minmax(0,1fr);}.note-card h3{font-size:1.05rem;}
   .archive-card{min-height:116px;padding:16px 12px;}.archive-title{font-size:1.1rem;}
