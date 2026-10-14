@@ -69,7 +69,7 @@ export function Archive({ onOpen }: {onOpen: (detail: Detail) => void}) {
     <SectionHeading label="Archive"><span id="archive-heading">More things<br />I’ve built</span></SectionHeading>
     <p className="section-description">Other projects, experiments, and earlier work.</p>
     <div className="archive-grid">{archive.map(project=><button className="archive-card" key={project.id} onClick={()=>onOpen(project.detail)} aria-label={`Explore ${project.title}`}>
-      <SketchIcon name={project.icon} /><span className="archive-copy"><span className="archive-title">{project.title}</span><span className="archive-description">{project.description}</span><span className="tag-row">{project.tags.map(tag=><Tag key={tag.label} tone={tag.tone}>{tag.label}</Tag>)}</span></span>
+      <SketchIcon name={project.icon} /><span className="archive-copy"><span className="archive-title">{project.id === 'dicoding-event' ? <>{project.title.slice(0, 10)}<wbr />{project.title.slice(10)}</> : project.title}</span><span className="archive-description">{project.description}</span><span className="tag-row">{project.tags.map(tag=><Tag key={tag.label} tone={tag.tone}>{tag.label}</Tag>)}</span></span>
       <span className="archive-meta"><span>{project.year}</span><ArrowRight size={20} aria-hidden="true" /></span>
     </button>)}</div>
     <a className="button button-dark section-button" href={social.github} target="_blank" rel="noopener noreferrer">Explore Full Archive <span className="sr-only">(opens in a new tab)</span><ArrowRight size={20} aria-hidden="true" /></a>
